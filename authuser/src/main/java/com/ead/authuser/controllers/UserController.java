@@ -41,7 +41,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         } else {
             userService.delete(userModelOptional.get());
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("User deleted success");
+            return ResponseEntity.status(HttpStatus.OK).body("User deleted success");
         }
     }
 }
