@@ -1,6 +1,8 @@
 package com.ead.authuser.services;
 
 import com.ead.authuser.models.UserModel;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -20,4 +22,6 @@ public interface UserService {
     boolean existByUserName(String username);
 
     boolean existByEmail(String email);
+
+    Page<UserModel> findAll(Pageable pageable);
 }
