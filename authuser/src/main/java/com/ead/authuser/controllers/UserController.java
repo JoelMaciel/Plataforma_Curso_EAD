@@ -5,6 +5,7 @@ import com.ead.authuser.models.UserModel;
 import com.ead.authuser.services.UserService;
 import com.ead.authuser.specifications.SpecificationTemplate;
 import com.fasterxml.jackson.annotation.JsonView;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +24,7 @@ import java.time.ZoneId;
 import java.util.Optional;
 import java.util.UUID;
 
+@Log4j2
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/users")
@@ -58,11 +60,18 @@ public class UserController {
     }
     @DeleteMapping("/{userId}")
     public  ResponseEntity<Object> deleteUser(@PathVariable(value = "userId") UUID userId) {
+
+        log.debug("DELETE deleteUser useId received {}", userId);
+
         Optional<UserModel> userModelOptional = userService.findById(userId);
         if(!userModelOptional.isPresent()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         } else {
             userService.delete(userModelOptional.get());
+
+            log.debug("DELETE deleteUser useId  {}", userId);
+            log.info("User deleted successfully userId {} ", userId);
+
             return ResponseEntity.status(HttpStatus.OK).body("User deleted success");
         }
     }
@@ -70,6 +79,7 @@ public class UserController {
     public  ResponseEntity<Object> updateUser(@PathVariable(value = "userId") UUID userId,
             @RequestBody @Validated(UserDto.UserView.UserPut.class)
             @JsonView(UserDto.UserView.UserPut.class) UserDto userDto){
+        log.debug("PUT registerUser useDto received {}", userDto.toString());
 
         Optional<UserModel> userModelOptional = userService.findById(userId);
 
@@ -85,25 +95,38 @@ public class UserController {
 
            userService.save(userModel);
 
+            log.debug("POST registerUser useModel saved {}", userModel.toString());
+            log.info("User updated successfully userId {} ", userModel.getUserId());
+
            return ResponseEntity.status(HttpStatus.OK).body(userModel);
         }
     }
     @PutMapping("/{userId}/password")
     public ResponseEntity<Object> updatePassword(@PathVariable(value = "userId") UUID userId,
-                           @RequestBody @Validated(UserDto.UserView.PasswordPut.class)
-                           @JsonView(UserDto.UserView.PasswordPut.class) UserDto userDto) {
+                                                 @RequestBody @Validated(UserDto.UserView.PasswordPut.class)
+                                                 @JsonView(UserDto.UserView.PasswordPut.class) UserDto userDto){
+
+        log.debug("PUT updatePassword userDto received {} ", userDto.toString());
+
         Optional<UserModel> userModelOptional = userService.findById(userId);
 
-       if(!userModelOptional.isPresent()) {
-           return  ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
-       } if (!userModelOptional.get().getPassword().equals(userDto.getOldPassword())) {
-           return  ResponseEntity.status(HttpStatus.CONFLICT).body("Error: Mismatched old password");
-        } else {
-           var userModel = userModelOptional.get();
-           userModel.setPassword(userDto.getPassword());
-           userModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
-           userService.save(userModel);
-           return ResponseEntity.status(HttpStatus.OK).body("Password update successfuly");
+        if(!userModelOptional.isPresent()){
+            return  ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
+        } if(!userModelOptional.get().getPassword().equals(userDto.getOldPassword())){
+
+            log.warn("Mismatched old password userId {} ", userId);
+
+            return  ResponseEntity.status(HttpStatus.CONFLICT).body("Error: Mismatched old password!");
+        } else{
+            var userModel = userModelOptional.get();
+            userModel.setPassword(userDto.getPassword());
+            userModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
+            userService.save(userModel);
+
+            log.debug("PUT updatePassword userModel saved {} ", userModel.toString());
+            log.info("Password updated successfully userId {} ", userModel.getUserId());
+            
+            return  ResponseEntity.status(HttpStatus.OK).body("Password updated successfully.");
         }
     }
 
