@@ -1,8 +1,8 @@
-package com.ead.course.clients;
+package com.ead.authuser.clients;
 
-import com.ead.course.dtos.ResponsePageDto;
-import com.ead.course.dtos.UserDto;
-import com.ead.course.services.UtilsService;
+import com.ead.authuser.dto.CourseDto;
+import com.ead.authuser.dto.ResponsePageDto;
+import com.ead.authuser.services.UtilsService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,38 +23,38 @@ import java.util.UUID;
 public class CourseClient {
 
     @Autowired
-    private UtilsService utilsService;
-
-    @Autowired
     private RestTemplate restTemplate;
 
-    @Value("${ead.api.url.authuser}")
-    String REQUEST_URI_AUTHUSER;
+    @Autowired
+    private UtilsService utilsService;
 
-    public Page<UserDto> getAllUsersByCourse(UUID courseId, Pageable pageable){
-        List<UserDto> searchResult = null;
+    @Value("${ead.api.url.course}")
+    String REQUEST_URL_COURSE;
 
-        ResponseEntity<ResponsePageDto<UserDto>> result = null;
+    public Page<CourseDto> getAllCoursesByUser(UUID userId, Pageable pageable){
+        List<CourseDto> searchResult = null;
 
-        String url = REQUEST_URI_AUTHUSER + utilsService.createUrlGetAllByCourse(courseId , pageable) ;
+        ResponseEntity<ResponsePageDto<CourseDto>> result = null;
+
+        String url = REQUEST_URL_COURSE + utilsService.createUrl(userId , pageable) ;
 
         log.debug("Resquest URL: {}" , url);
         log.info("Request URl: {} " , url);
 
         try {
-            ParameterizedTypeReference<ResponsePageDto<UserDto>> responseType =
-                    new ParameterizedTypeReference<ResponsePageDto<UserDto>>() {};
+            ParameterizedTypeReference<ResponsePageDto<CourseDto>> responseType =
+                    new ParameterizedTypeReference<ResponsePageDto<CourseDto>>() {};
 
-            result = restTemplate.exchange(url, HttpMethod.GET, null, responseType);
+             result = restTemplate.exchange(url, HttpMethod.GET, null, responseType);
 
             searchResult = result.getBody().getContent();
 
             log.debug("Response Number of Elements: {} ", searchResult.size());
 
         }catch (HttpStatusCodeException e){
-            log.error("Error request /users {} " , e);
+            log.error("Error request /course {} " , e);
         }
-        log.info("Ending request /users  userId {} " , courseId);
+        log.info("Ending request /courses userId {} " , userId);
 
         return result.getBody();
     }
