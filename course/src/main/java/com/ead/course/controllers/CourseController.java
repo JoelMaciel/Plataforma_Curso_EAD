@@ -80,6 +80,8 @@ public class CourseController {
    @PutMapping("/{courseId}")
     public  ResponseEntity<Object> updateCourse(@PathVariable(value = "courseId") UUID courseId ,
                             @RequestBody @Valid CourseDto courseDto ) {
+       log.debug("PUT updateCourse courseDto received {} ", courseDto.toString());
+
        Optional<CourseModel> courseModelOptional = courseService.findById(courseId);
        if(!courseModelOptional.isPresent()) {
            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Course Not Found");
@@ -89,6 +91,9 @@ public class CourseController {
        courseModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
 
        courseService.save(courseModel);
+
+       log.debug("PUT updateCourse courseId saved {} ", courseModel.getCourseId());
+       log.info("Course updated successfully courseId {} ", courseModel.getCourseId());
 
        return ResponseEntity.status(HttpStatus.OK).body(courseModel);
    }

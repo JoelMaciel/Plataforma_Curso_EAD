@@ -141,6 +141,9 @@ public class UserController {
     public ResponseEntity<Object> updateImage(@PathVariable(value = "userId") UUID userId ,
                                @RequestBody @Validated(UserDto.UserView.ImagePut.class)
                                @JsonView(UserDto.UserView.ImagePut.class) UserDto userDto) {
+
+        log.debug("PUT updateImage userDto received {} ", userDto.toString());
+
         Optional<UserModel> userModelOptional = userService.findById(userId);
 
         if(!userModelOptional.isPresent()) {
@@ -151,6 +154,9 @@ public class UserController {
             userModel.setImageUrl(userDto.getImageUrl());
             userModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
             userService.save(userModel);
+            log.debug("PUT updateImage userId saved {} ", userModel.getUserId());
+            log.info("Image updated successfully userId {} ", userModel.getUserId());
+            
             return  ResponseEntity.status(HttpStatus.OK).body(userModel);
         }
     }
