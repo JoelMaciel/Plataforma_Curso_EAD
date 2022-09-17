@@ -36,9 +36,13 @@ public class UserCourseController {
     private UserService userService;
 
     @GetMapping("/users/{userId}/courses")
-    public ResponseEntity<Page<CourseDto>> getAllCourseByUser(
+    public ResponseEntity<Object> getAllCoursesByUser(
             @PageableDefault(page = 0, size = 10, sort = "courseId", direction = Sort.Direction.ASC) Pageable pageable ,
             @PathVariable(value = "userId") UUID userId) {
+        Optional<UserModel> userModelOptional = userService.findById(userId);
+        if(!userModelOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found .");
+        }
 
         var coursesUser = courseClient.getAllCoursesByUser(userId, pageable);
 
@@ -66,10 +70,10 @@ public class UserCourseController {
     @DeleteMapping("/users/courses/{courseId}")
     public ResponseEntity<Object> deleteUserCourseByCourse(@PathVariable("courseId") UUID courseId) {
         if(!userCourseService.existsByCourseId(courseId)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("UserCourseN not found. ");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("UserCourse not found. ");
         }
         userCourseService.deleteUserCourseByCourse(courseId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("UserCourse deleted successfully");
+        return ResponseEntity.status(HttpStatus.OK).body("UserCourse deleted successfully");
 
     }
 }

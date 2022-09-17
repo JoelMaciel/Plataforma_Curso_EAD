@@ -36,7 +36,7 @@ public class CourseClient {
 
         ResponseEntity<ResponsePageDto<CourseDto>> result = null;
 
-        String url = REQUEST_URL_COURSE + utilsService.createUrl(userId , pageable) ;
+        String url = REQUEST_URL_COURSE + utilsService.createUrlGetAllCoursesByUser(userId , pageable) ;
 
         log.debug("Resquest URL: {}" , url);
         log.info("Request URl: {} " , url);
@@ -57,5 +57,10 @@ public class CourseClient {
         log.info("Ending request /courses userId {} " , userId);
 
         return result.getBody();
+    }
+
+    public void deleteUserInCourse(UUID userId) {
+        String url = REQUEST_URL_COURSE + "/courses/users/" + userId;
+        restTemplate.exchange(url, HttpMethod.DELETE , null , String.class);
     }
 }
