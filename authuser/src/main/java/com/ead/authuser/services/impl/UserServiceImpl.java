@@ -45,7 +45,8 @@ public class UserServiceImpl implements UserService {
 
         boolean deleteUserCourseInCourse = false;
 
-        List<UserCourseModel> userCourseModelList = userCourseRepository.findAllUserCourseIntoUser(userModel.getUserId());
+        List<UserCourseModel> userCourseModelList =
+                userCourseRepository.findAllUserCourseIntoUser(userModel.getUserId());
         if(!userCourseModelList.isEmpty()) {
             userCourseRepository.deleteAll(userCourseModelList);
             deleteUserCourseInCourse = true;
