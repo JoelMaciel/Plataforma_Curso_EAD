@@ -22,6 +22,8 @@ spring:
   output:
     ansi:
       enabled:  Always
+  rabbitmq:
+    addresses: amqps://pejenpkz:qfLDQb3S1txjQpw6HDrd-K3FQqRdiW5J@woodpecker.rmq.cloudamqp.com/pejenpkz
 
 logging:
   level:
