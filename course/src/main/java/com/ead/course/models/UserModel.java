@@ -16,7 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
-@Table(name = "TB__USERS")
+@Table(name = "TB_USERS")
 public class UserModel implements Serializable {
     private  static  final  long serialVersionUID = 1L;
 
