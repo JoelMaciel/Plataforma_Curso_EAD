@@ -19,6 +19,8 @@ spring:
     properties:
       hibernate:
         show_sql: true
+  rabbitmq:
+    addresses: amqps://pejenpkz:qfLDQb3S1txjQpw6HDrd-K3FQqRdiW5J@woodpecker.rmq.cloudamqp.com/pejenpkz
 
 ead:
   api:
