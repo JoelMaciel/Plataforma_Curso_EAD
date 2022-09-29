@@ -47,3 +47,11 @@ eureka:
   instance:
     hostname: localhost
 
+resilience4j:
+  retry:
+    instances:
+      retryInstance:
+        max-attempts: 3
+        wait-duration:  5s
+
+
