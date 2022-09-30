@@ -11,7 +11,7 @@ spring:
           uri:  https://github.com/JoelMaciel/ead-config-server-repo
           default-label: main
           username: JoelMaciel
-          password: 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
+          password:
 
 eureka:
   client:
