@@ -11,6 +11,7 @@ import com.ead.course.repositories.LessonRepository;
 import com.ead.course.repositories.ModuleRepository;
 import com.ead.course.repositories.UserRepository;
 import com.ead.course.services.CourseService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,6 +25,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Log4j2
+@RequiredArgsConstructor
 @Service
 public class CourseServiceImpl implements CourseService {
     @Autowired
@@ -36,8 +38,7 @@ public class CourseServiceImpl implements CourseService {
     @Autowired
     private ModuleRepository moduleRepository;
 
-    @Autowired
-    private NotificationCommandPublisher notificationCommandPublisher;
+    private final NotificationCommandPublisher notificationCommandPublisher;
     @Transactional
     @Override
     public void delete(CourseModel courseModel) {
