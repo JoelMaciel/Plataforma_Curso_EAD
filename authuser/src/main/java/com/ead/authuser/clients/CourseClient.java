@@ -1,10 +1,9 @@
 package com.ead.authuser.clients;
 
-import com.ead.authuser.dto.CourseDto;
-import com.ead.authuser.dto.ResponsePageDto;
+import com.ead.authuser.dtos.CourseDto;
+import com.ead.authuser.dtos.ResponsePageDto;
 import com.ead.authuser.services.UtilsService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
-import io.github.resilience4j.retry.annotation.Retry;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
