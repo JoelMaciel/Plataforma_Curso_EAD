@@ -1,4 +1,4 @@
-package com.ead.authuser.dto;
+package com.ead.authuser.dtos;
 
 import lombok.Data;
 

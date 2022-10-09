@@ -1,6 +1,6 @@
 package com.ead.authuser.models;
 
-import com.ead.authuser.dto.UserEventDto;
+import com.ead.authuser.dtos.UserEventDto;
 import com.ead.authuser.enums.UserStatus;
 import com.ead.authuser.enums.UserType;
 import com.fasterxml.jackson.annotation.JsonFormat;
