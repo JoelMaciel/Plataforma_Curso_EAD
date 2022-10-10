@@ -1,4 +1,4 @@
-package com.ead.course.config;
+package com.ead.course.configs;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;

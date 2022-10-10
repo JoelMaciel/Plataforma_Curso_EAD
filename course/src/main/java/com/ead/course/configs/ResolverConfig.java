@@ -1,4 +1,4 @@
-package com.ead.course.config;
+package com.ead.course.configs;
 
 import net.kaczmarzyk.spring.data.jpa.web.SpecificationArgumentResolver;
 import org.springframework.context.annotation.Configuration;
